@@ -99,7 +99,8 @@ object DocumentUtils {
         val docList = arrayListOf<FileDoc>()
         var cursor: Cursor? = null
         try {
-            val childrenUri = "aaa"
+            val documentId = uri.lastPathSegment ?: ""
+            val childrenUri =  DocumentsContract.buildChildDocumentsUriUsingTree(uri, documentId)
             cursor = appCtx.contentResolver.query(
                 childrenUri, arrayOf(
                     DocumentsContract.Document.COLUMN_DOCUMENT_ID,
@@ -122,8 +123,8 @@ object DocumentUtils {
                             isDir = cursor.getString(mci) == DocumentsContract.Document.MIME_TYPE_DIR,
                             size = cursor.getLong(sci),
                             date = Date(cursor.getLong(dci)),
-                            uri = DocumentsContract
-                                .buildDocumentUriUsingTree(uri, cursor.getString(ici))
+                            uri =  DocumentsContract.buildDocumentUri(uri.authority, cursor.getString(ici))
+
                         )
                         if (filter == null || filter.invoke(item)) {
                             docList.add(item)
