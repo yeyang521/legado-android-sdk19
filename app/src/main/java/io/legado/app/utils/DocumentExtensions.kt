@@ -99,8 +99,7 @@ object DocumentUtils {
         val docList = arrayListOf<FileDoc>()
         var cursor: Cursor? = null
         try {
-            val childrenUri = DocumentsContract
-                .buildChildDocumentsUriUsingTree(uri, DocumentsContract.getDocumentId(uri))
+            val childrenUri = "aaa"
             cursor = appCtx.contentResolver.query(
                 childrenUri, arrayOf(
                     DocumentsContract.Document.COLUMN_DOCUMENT_ID,
