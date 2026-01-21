@@ -92,11 +92,38 @@ object DocumentUtils {
             return buffer
         } ?: throw NoStackTraceException("打开文件失败\n${uri}")
     }
+@Throws(Exception::class)
+fun listFiles(uri: Uri, filter: ((file: FileDoc) -> Boolean)? = null): ArrayList<FileDoc> {
+    val docList = arrayListOf<FileDoc>()
 
-    @Throws(Exception::class)
-    fun listFiles(uri: Uri, filter: ((file: FileDoc) -> Boolean)? = null): ArrayList<FileDoc> {
-        return  ArrayList<FileDoc>()
+    // 1. 取出真实路径
+    val path = uri.path ?: throw IllegalArgumentException("uri.path == null")
+    val dir = File(path)
+    if (!dir.exists() || !dir.isDirectory) return docList
+
+    // 2. 列出子文件（null 表示没权限或 I/O 错误）
+    val children = dir.listFiles() ?: return docList
+
+    // 3. 按文件名升序（同原来 SQL 的 COLUMN_DISPLAY_NAME ASC）
+    children.sortBy { it.name }
+
+    // 4. 逐个封装
+    for (file in children) {
+        val item = FileDoc(
+            name  = file.name,
+            isDir = file.isDirectory,
+            size  = file.length(),
+            date  = Date(file.lastModified()),
+            uri   = Uri.fromFile(file)          // 直接返回 file://
+        )
+        if (filter == null || filter(item)) {
+            docList.add(item)
+        }
     }
+    return docList
+}
+
+    
 
     @Throws(Exception::class)
     fun listFiles(path: String, filter: ((file: File) -> Boolean)? = null): ArrayList<FileDoc> {
