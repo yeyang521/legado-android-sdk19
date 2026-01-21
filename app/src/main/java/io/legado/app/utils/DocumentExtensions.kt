@@ -96,47 +96,7 @@ object DocumentUtils {
 
     @Throws(Exception::class)
     fun listFiles(uri: Uri, filter: ((file: FileDoc) -> Boolean)? = null): ArrayList<FileDoc> {
-        val docList = arrayListOf<FileDoc>()
-        var cursor: Cursor? = null
-        try {
-            val documentId = uri.lastPathSegment ?: ""
-            val childrenUri =  DocumentsContract.buildChildDocumentsUriUsingTree(uri, documentId)
-            cursor = appCtx.contentResolver.query(
-                childrenUri, arrayOf(
-                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                    DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                    DocumentsContract.Document.COLUMN_LAST_MODIFIED,
-                    DocumentsContract.Document.COLUMN_SIZE,
-                    DocumentsContract.Document.COLUMN_MIME_TYPE
-                ), null, null, DocumentsContract.Document.COLUMN_DISPLAY_NAME
-            )
-            cursor?.let {
-                val ici = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DOCUMENT_ID)
-                val nci = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME)
-                val sci = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_SIZE)
-                val mci = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_MIME_TYPE)
-                val dci = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_LAST_MODIFIED)
-                if (cursor.moveToFirst()) {
-                    do {
-                        val item = FileDoc(
-                            name = cursor.getString(nci),
-                            isDir = cursor.getString(mci) == DocumentsContract.Document.MIME_TYPE_DIR,
-                            size = cursor.getLong(sci),
-                            date = Date(cursor.getLong(dci)),
-                            uri =  DocumentsContract.buildDocumentUri(uri.authority, cursor.getString(ici))
-
-                        )
-                        if (filter == null || filter.invoke(item)) {
-                            docList.add(item)
-                        }
-                    } while (cursor.moveToNext())
-                }
-            }
-        } catch (e: Exception){
-        } finally {
-            cursor?.close()
-        }
-        return docList
+        return null
     }
 
     @Throws(Exception::class)
