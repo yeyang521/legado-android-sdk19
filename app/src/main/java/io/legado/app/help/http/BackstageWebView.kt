@@ -88,7 +88,7 @@ class BackstageWebView(
         settings.domStorageEnabled = true
         settings.blockNetworkImage = true
         settings.userAgentString = headerMap?.get(AppConst.UA_NAME)
-        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+       
         if (sourceRegex.isNullOrEmpty()) {
             webView.webViewClient = HtmlWebViewClient()
         } else {
