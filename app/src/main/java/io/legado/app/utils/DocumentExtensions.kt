@@ -3,7 +3,6 @@ package io.legado.app.utils
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import io.legado.app.model.NoStackTraceException
 import splitties.init.appCtx
