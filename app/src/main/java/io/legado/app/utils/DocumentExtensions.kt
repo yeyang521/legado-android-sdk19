@@ -95,7 +95,7 @@ object DocumentUtils {
 
     @Throws(Exception::class)
     fun listFiles(uri: Uri, filter: ((file: FileDoc) -> Boolean)? = null): ArrayList<FileDoc> {
-        return null
+        return  ArrayList<FileDoc>()
     }
 
     @Throws(Exception::class)
